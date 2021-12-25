@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class CommandButtonsPresenter : MonoBehaviour
 {
 
     #region Fields
 
-    [SerializeField] private SelectableValue _selectable;
     [SerializeField] private CommandButtonsView _view;
-    [SerializeField] private AssetsContext _context;
+
+    [Inject] private SelectableValue _selectable;
+    [Inject] private PointableValue _pointable;
+    [Inject] private CommandButtonsModel _model;
 
     private ISelectable _currentSelectable;
     
@@ -20,12 +22,20 @@ public class CommandButtonsPresenter : MonoBehaviour
     private void Start()
     {
 
-        _selectable.OnSelected += onSelected;
+        _view.OnClick               += _model.OnCommandButtonClicked;
+
+        _model.OnCommandSent        += _view.UnblockAllInteractions;
+        _model.OnCommandCancel      += _view.UnblockAllInteractions;
+        _model.OnCommandAccepted    += _view.BlockInteractions;
+
+        _selectable.OnNewValue      += onSelected;
         
         onSelected(_selectable.CurrentValue);
 
-        _view.OnClick += onButtonClick;
-    
+        _pointable.OnNewValue       += onPointed;
+
+        onPointed(_pointable.CurrentValue);
+
     }
 
     #endregion
@@ -40,8 +50,15 @@ public class CommandButtonsPresenter : MonoBehaviour
 
             return;
         
-        }
-        
+        };
+
+        if(_currentSelectable != null)
+        {
+
+            _model.OnSelectionChanged();
+
+        };
+
         _currentSelectable = selectable;
 
         _view.Clear();
@@ -55,58 +72,22 @@ public class CommandButtonsPresenter : MonoBehaviour
             
             _view.MakeLayout(commandExecutors);
         
-        }
+        };
 
     }
 
-    private void onButtonClick(ICommandExecutor commandExecutor)
+    private void onPointed(IPointable pointable)
     {
-        
-        if (commandExecutor is CommandExecutorBase<IProduceUnitCommand> unitProducer)
-        {
-        
-            unitProducer.ExecuteSpecificCommand(_context.Inject(new ProduceUnitCommandHeir()));
-            
-            return;
-        
-        }
-        else if (commandExecutor is CommandExecutorBase<IAttackCommand> attacker)
+
+        if (pointable != null)
         {
 
-            attacker.ExecuteSpecificCommand(new AttackCommand());
-
-            return;
-
-        }
-        else if(commandExecutor is CommandExecutorBase<IMoveCommand> mover)
-        {
-
-            mover.ExecuteSpecificCommand(new MoveCommand());
-
-            return;
-
-        }
-        else if(commandExecutor is CommandExecutorBase<IPatrolCommand> patroler)
-        {
-
-            patroler.ExecuteSpecificCommand(new PatrolCommand());
-
-            return;
-
-        }
-        else if(commandExecutor is CommandExecutorBase<IStopCommand> stopper)
-        {
-
-            stopper.ExecuteSpecificCommand(new StopCommand());
-
-            return;
+            _model.OnPointingChanged();
 
         };
 
-            throw new ApplicationException($"{nameof(CommandButtonsPresenter)}.{nameof(onButtonClick)}: Unknown type of commands executor: {commandExecutor.GetType().FullName}!");
-    
     }
-    
+
     #endregion
 
 }

@@ -8,7 +8,7 @@ public class UnitStopCommand : CommandExecutorBase<IStopCommand>
     public override void ExecuteSpecificCommand(IStopCommand command)
     {
 
-        Debug.Log("Stop command has been executed.");
+        Debug.Log($"Unit {name} has stopped.");
 
     }
 

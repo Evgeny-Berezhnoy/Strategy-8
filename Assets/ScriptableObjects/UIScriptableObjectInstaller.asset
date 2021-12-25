@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639b6a3d4dc3abc4db304b573603d18c, type: 3}
+  m_Name: UIScriptableObjectInstaller
+  m_EditorClassIdentifier: 
+  _selectableValue: {fileID: 11400000, guid: ad5176704a414d04fbad75b647ea928a, type: 2}
+  _vector3Value: {fileID: 11400000, guid: 46bf4f390375b6849a7a7dd805127c36, type: 2}
+  _context: {fileID: 11400000, guid: 11d312fcdab3b0041b8bc749d7a06383, type: 2}
+  _outlinableValue: {fileID: 11400000, guid: 4a246d31f28c6144790931706e5fa8a1, type: 2}
+  _pointableValue: {fileID: 11400000, guid: de92502efa15b5f4e97cd8edf6ee70d6, type: 2}

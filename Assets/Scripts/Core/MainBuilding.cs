@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(OutlineDraw))]
-public class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISelectable, IOutlinable
+public class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISelectable, IOutlinable, IPointable
 {
 
     #region Fields

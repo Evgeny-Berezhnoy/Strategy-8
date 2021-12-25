@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Zenject;
 
 public class UnitMoveCommand : CommandExecutorBase<IMoveCommand>
 {
@@ -8,7 +10,7 @@ public class UnitMoveCommand : CommandExecutorBase<IMoveCommand>
     public override void ExecuteSpecificCommand(IMoveCommand command)
     {
 
-        Debug.Log("Move command has been executed.");
+        Debug.Log($"{name} is moving to {command.Target}!");
 
     }
 
