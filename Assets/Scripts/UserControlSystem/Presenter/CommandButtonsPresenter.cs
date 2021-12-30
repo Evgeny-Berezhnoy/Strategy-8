@@ -32,10 +32,6 @@ public class CommandButtonsPresenter : MonoBehaviour
         
         onSelected(_selectable.CurrentValue);
 
-        _pointable.OnNewValue       += onPointed;
-
-        onPointed(_pointable.CurrentValue);
-
     }
 
     #endregion
@@ -72,18 +68,6 @@ public class CommandButtonsPresenter : MonoBehaviour
             
             _view.MakeLayout(commandExecutors);
         
-        };
-
-    }
-
-    private void onPointed(IPointable pointable)
-    {
-
-        if (pointable != null)
-        {
-
-            _model.OnPointingChanged();
-
         };
 
     }

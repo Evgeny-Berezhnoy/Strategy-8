@@ -13,7 +13,7 @@ public class UIScriptableObjectInstaller : ScriptableObjectInstaller
     [SerializeField] private AssetsContext _context;
     [SerializeField] private OutlinableValue _outlinableValue;
     [SerializeField] private PointableValue _pointableValue;
-
+    
     #endregion
 
     #region Base Methods
@@ -30,6 +30,10 @@ public class UIScriptableObjectInstaller : ScriptableObjectInstaller
             .FromInstance(_vector3Value);
 
         Container
+            .Bind<IAwaitable<Vector3>>()
+            .FromInstance(_vector3Value);
+        
+        Container
             .Bind<AssetsContext>()
             .FromInstance(_context);
 
@@ -39,6 +43,10 @@ public class UIScriptableObjectInstaller : ScriptableObjectInstaller
 
         Container
             .Bind<PointableValue>()
+            .FromInstance(_pointableValue);
+        
+        Container
+            .Bind<IAwaitable<IPointable>>()
             .FromInstance(_pointableValue);
 
     }
