@@ -39,29 +39,74 @@ public class CommandButtonsView : MonoBehaviour
 
     #region Methods
 
+	public void BlockInteractions(ICommandExecutor commandExecutor)
+    {
+
+		UnblockAllInteractions();
+
+		GetButtonGameobjectByType(commandExecutor.GetType()).GetComponent<Selectable>().interactable = false;
+
+    }
+
+	public void UnblockAllInteractions()
+    {
+
+		SetInteractable(true);
+
+    }
+
+	public void SetInteractable(bool value)
+    {
+
+		_attackButton
+			.GetComponent<Selectable>().interactable = value;
+		
+		_moveButton
+			.GetComponent<Selectable>().interactable = value;
+		
+		_patrolButton
+			.GetComponent<Selectable>().interactable = value;
+		
+		_stopButton
+			.GetComponent<Selectable>().interactable = value;
+		
+		_produceUnitButton
+			.GetComponent<Selectable>().interactable = value;
+		
+	}
+
 	public void MakeLayout(IEnumerable<ICommandExecutor> commandExecutors)
     {
 
 		foreach(var currentExecutor in commandExecutors)
         {
 
-			var buttonCollocations =
-				_buttonsByExecutorType
-				.Where(type => type.Key.IsAssignableFrom(currentExecutor.GetType()));
-
-			foreach(var buttonCollocation in buttonCollocations)
-            {
-
-				var button = buttonCollocation.Value;
-
-				button.gameObject.SetActive(true);
-				button.onClick.AddListener(() => OnClick?.Invoke(currentExecutor));
+			var button = GetButtonByType(currentExecutor.GetType());
 			
-			};
+			button.gameObject.SetActive(true);
+			button.onClick.AddListener(() => OnClick?.Invoke(currentExecutor));
 
         };
 
     }
+
+	private GameObject GetButtonGameobjectByType(Type executorInstanceType)
+    {
+
+		return GetButtonByType(executorInstanceType).gameObject;
+
+	}
+
+	private Button GetButtonByType(Type executorInstanceType)
+    {
+
+		return
+			_buttonsByExecutorType
+				.Where(type => type.Key.IsAssignableFrom(executorInstanceType))
+				.First()
+				.Value;
+
+	}
 
 	public void Clear()
     {

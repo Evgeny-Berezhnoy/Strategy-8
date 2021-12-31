@@ -8,7 +8,7 @@ public class UnitPatrolCommand : CommandExecutorBase<IPatrolCommand>
     public override void ExecuteSpecificCommand(IPatrolCommand command)
     {
 
-        Debug.Log("Patrol command has been executed.");
+        Debug.Log($"Unit {name} is patroling area near {command.Target} coordinates.");
 
     }
 

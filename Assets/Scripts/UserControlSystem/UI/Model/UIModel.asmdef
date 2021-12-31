@@ -1,7 +1,10 @@
 {
     "name": "UIModel",
     "references": [
-        "GUID:8ba8ccbcdf129634ca6d5d9d4329c833"
+        "GUID:8ba8ccbcdf129634ca6d5d9d4329c833",
+        "GUID:c35cd23157b1a48408c09b17a00a623d",
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
+        "GUID:83b9a1558c23cb24fb677d2c4b874819"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

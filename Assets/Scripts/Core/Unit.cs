@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(OutlineDraw))]
-public class Unit : MonoBehaviour, ISelectable, IOutlinable
+public class Unit : MonoBehaviour, ISelectable, IOutlinable, IPointable
 {
 
     #region Fields
