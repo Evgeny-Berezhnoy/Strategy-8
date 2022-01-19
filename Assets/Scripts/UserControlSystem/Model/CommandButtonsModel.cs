@@ -76,17 +76,7 @@ public class CommandButtonsModel
         ProcessOnCancel();
 
     }
-
-
-    public void OnPointingChanged()
-    {
-
-        _commandIsPending = false;
-
-        ProcessOnCancel();
-
-    }
-
+    
     private void ProcessOnCancel()
     {
 
