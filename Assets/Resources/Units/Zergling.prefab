@@ -3050,11 +3050,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4344988465606033226}
   - component: {fileID: 4344988465596403880}
+  - component: {fileID: 2219856013963948474}
   - component: {fileID: -5304939253349627303}
   - component: {fileID: 6798173636905011630}
   - component: {fileID: 7236706551561725947}
   - component: {fileID: 3792064340218970673}
   - component: {fileID: 4569650055892091609}
+  - component: {fileID: 4371165310068929490}
   m_Layer: 0
   m_Name: Zergling
   m_TagString: Untagged
@@ -3089,7 +3091,7 @@ Animator:
   m_GameObject: {fileID: 4344988465605796714}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 2732fe64dd2799f439fb845921df626b, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bde479f4af3d4734981b99628ea00ed1, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -3098,6 +3100,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!195 &2219856013963948474
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4344988465605796714}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &-5304939253349627303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3159,6 +3183,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fba5206caba2f224dac53dcb911dc914, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4371165310068929490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4344988465605796714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8355203f3f4d0824fac9bb2133ca793c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4344988465605796720

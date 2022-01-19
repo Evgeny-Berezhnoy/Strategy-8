@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(OutlineDraw))]
+[RequireComponent(typeof(UnitMoveCommand))]
+[RequireComponent(typeof(UnitStopCommand))]
 public class Unit : MonoBehaviour, ISelectable, IOutlinable, IPointable
 {
 
@@ -8,9 +10,8 @@ public class Unit : MonoBehaviour, ISelectable, IOutlinable, IPointable
 
     [SerializeField] private float _maxHealth = 1000;
     [SerializeField] private Sprite _icon;
-
     [SerializeField] private OutlineDraw _outlineDraw;
-
+    
     private float _health = 1000;
 
     #endregion
@@ -21,6 +22,20 @@ public class Unit : MonoBehaviour, ISelectable, IOutlinable, IPointable
     public float MaxHealth => _maxHealth;
     public Sprite Icon => _icon;
     public OutlineDraw OutlineDraw => _outlineDraw;
+
+    #endregion
+
+    #region Unity Events
+
+    public void Start()
+    {
+
+        var cancellationTokenManager = new CancellationTokenManager();
+
+        gameObject.GetComponent<UnitMoveCommand>().CancellationTokenManager = cancellationTokenManager;
+        gameObject.GetComponent<UnitStopCommand>().CancellationTokenManager = cancellationTokenManager;
+        
+    }
 
     #endregion
 

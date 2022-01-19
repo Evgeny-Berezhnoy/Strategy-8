@@ -7,10 +7,8 @@ public class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISelectabl
     #region Fields
 
     [SerializeField] private Transform _unitsParent;
-
     [SerializeField] private float _maxHealth = 1000;
     [SerializeField] private Sprite _icon;
-
     [SerializeField] private OutlineDraw _outlineDraw;
 
     private float _health = 1000;
@@ -23,7 +21,7 @@ public class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISelectabl
     public float MaxHealth => _maxHealth;
     public Sprite Icon => _icon;
     public OutlineDraw OutlineDraw => _outlineDraw;
-    
+
     #endregion
 
     #region Base Methods
@@ -34,9 +32,9 @@ public class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISelectabl
         Instantiate(
             command.UnitPrefab,
             new Vector3(
-                Random.Range(-10, 10),
+                Random.Range(transform.position.x - 10, transform.position.x + 10),
                 0,
-                Random.Range(-10, 10)),
+                Random.Range(transform.position.z - 10, transform.position.z + 10)),
                 Quaternion.identity,
                 _unitsParent);
 
