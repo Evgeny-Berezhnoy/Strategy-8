@@ -14,8 +14,9 @@ public class CommandButtonsView : MonoBehaviour
 	[SerializeField] private Button _patrolButton;
 	[SerializeField] private Button _stopButton;
 	[SerializeField] private Button _produceUnitButton;
+	[SerializeField] private Button _rendezvousPointButton;
 
-	public Action<ICommandExecutor> OnClick;
+	public Action<ICommandExecutor, ICommandQueueManager> OnClick;
 	
 	private Dictionary<Type, Button> _buttonsByExecutorType;
 
@@ -32,6 +33,7 @@ public class CommandButtonsView : MonoBehaviour
 		_buttonsByExecutorType.Add(typeof(CommandExecutorBase<IPatrolCommand>), _patrolButton);
 		_buttonsByExecutorType.Add(typeof(CommandExecutorBase<IStopCommand>), _stopButton);
 		_buttonsByExecutorType.Add(typeof(CommandExecutorBase<IProduceUnitCommand>), _produceUnitButton);
+		_buttonsByExecutorType.Add(typeof(CommandExecutorBase<IRendezvousPointCommand>), _rendezvousPointButton);
 
 	}
 
@@ -72,10 +74,13 @@ public class CommandButtonsView : MonoBehaviour
 		
 		_produceUnitButton
 			.GetComponent<Selectable>().interactable = value;
-		
+
+		_rendezvousPointButton
+			.GetComponent<Selectable>().interactable = value;
+
 	}
 
-	public void MakeLayout(IEnumerable<ICommandExecutor> commandExecutors)
+	public void MakeLayout(IEnumerable<ICommandExecutor> commandExecutors, ICommandQueueManager commandQueueManager)
     {
 
 		foreach(var currentExecutor in commandExecutors)
@@ -84,7 +89,7 @@ public class CommandButtonsView : MonoBehaviour
 			var button = GetButtonByType(currentExecutor.GetType());
 			
 			button.gameObject.SetActive(true);
-			button.onClick.AddListener(() => OnClick?.Invoke(currentExecutor));
+			button.onClick.AddListener(() => OnClick?.Invoke(currentExecutor, commandQueueManager));
 
         };
 

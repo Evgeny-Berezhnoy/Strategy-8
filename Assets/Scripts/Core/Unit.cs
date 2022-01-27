@@ -27,7 +27,7 @@ public class Unit : MonoBehaviour, ISelectable, IOutlinable, IPointable
 
     #region Unity Events
 
-    public void Start()
+    public void Awake()
     {
 
         var cancellationTokenManager = new CancellationTokenManager();

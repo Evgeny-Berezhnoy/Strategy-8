@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(OutlineDraw))]
-public class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISelectable, IOutlinable, IPointable
+public class MainBuilding : MonoBehaviour, ISelectable, IOutlinable, IPointable
 {
 
     #region Fields
 
-    [SerializeField] private Transform _unitsParent;
+    [SerializeField] private Transform _unitParent;
     [SerializeField] private float _maxHealth = 1000;
     [SerializeField] private Sprite _icon;
     [SerializeField] private OutlineDraw _outlineDraw;
@@ -21,24 +21,6 @@ public class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISelectabl
     public float MaxHealth => _maxHealth;
     public Sprite Icon => _icon;
     public OutlineDraw OutlineDraw => _outlineDraw;
-
-    #endregion
-
-    #region Base Methods
-
-    public override void ExecuteSpecificCommand(IProduceUnitCommand command)
-    {
-
-        Instantiate(
-            command.UnitPrefab,
-            new Vector3(
-                Random.Range(transform.position.x - 10, transform.position.x + 10),
-                0,
-                Random.Range(transform.position.z - 10, transform.position.z + 10)),
-                Quaternion.identity,
-                _unitsParent);
-
-    }
 
     #endregion
 

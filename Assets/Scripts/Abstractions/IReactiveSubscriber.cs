@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public interface IReactiveSubscriber<T>
+public interface IReactiveSubscriber<T> : IObservable<T>
 {
 
     #region Methods

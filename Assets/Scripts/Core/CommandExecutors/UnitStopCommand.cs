@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 
 public class UnitStopCommand : CommandExecutorBase<IStopCommand>, ICancellableTokenManager
 {
@@ -11,7 +12,7 @@ public class UnitStopCommand : CommandExecutorBase<IStopCommand>, ICancellableTo
 
     #region Base Methods
 
-    public override void ExecuteSpecificCommand(IStopCommand command)
+    public async override Task ExecuteSpecificCommand(IStopCommand command)
     {
         CancellationTokenManager.CancelToken();
 

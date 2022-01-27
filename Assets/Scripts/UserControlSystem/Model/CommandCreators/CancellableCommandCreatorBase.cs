@@ -37,6 +37,11 @@ public abstract class CancellableCommandCreatorBase<TCommand, TArgument> : Comma
         catch { };
     }
 
+    protected override void classSpecificCommandCreation(Action<TCommand> creationCallback, object argument)
+    {
+        creationCallback?.Invoke(_context.Inject(CreateCommand((TArgument)argument)));
+    }
+
     public override void ProcessCancel()
     {
         base.ProcessCancel();

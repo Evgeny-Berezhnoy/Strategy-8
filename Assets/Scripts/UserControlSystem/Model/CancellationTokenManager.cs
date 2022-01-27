@@ -9,6 +9,12 @@ public class CancellationTokenManager
 
     #endregion
 
+    #region
+
+    public bool TokenIsActive => (_cancellationTokenSource != null);
+
+    #endregion
+
     #region Methods
 
     public void CancelToken()

@@ -19,6 +19,11 @@ public abstract class StatelessSOValueBase<T> : ScriptableObjectValueBase<T>
         return new NewValueNotifier<StatelessSOValueBase<T>, T>(this);
     }
 
+    public override IDisposable Subscribe(IObserver<T> observer)
+    {
+        return _valueNotifier.Subscribe(observer);
+    }
+
     public override void Subscribe(Action<T> notification)
     {
         _valueNotifier

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(Animator))]
@@ -26,7 +27,7 @@ public class UnitMoveCommand : CommandExecutorBase<IMoveCommand>, ICancellableTo
 
     #region Unity Events
 
-    private void Start()
+    private void Awake()
     {
         _navMeshAgent   = GetComponent<NavMeshAgent>();
         _animator       = GetComponent<Animator>();
@@ -37,7 +38,7 @@ public class UnitMoveCommand : CommandExecutorBase<IMoveCommand>, ICancellableTo
 
     #region Base Methods
 
-    public override async void ExecuteSpecificCommand(IMoveCommand command)
+    public override async Task ExecuteSpecificCommand(IMoveCommand command)
     {
         _navMeshAgent.destination = command.Target;
         _animator.SetTrigger(Walk);
@@ -46,7 +47,7 @@ public class UnitMoveCommand : CommandExecutorBase<IMoveCommand>, ICancellableTo
         {
             await _stop.WithCancellation(CancellationTokenManager.CreateToken());
         }
-        catch { };
+        finally { CancellationTokenManager.CancelToken(); };
 
         _navMeshAgent.destination = transform.position;
         _animator.SetTrigger(Idle);

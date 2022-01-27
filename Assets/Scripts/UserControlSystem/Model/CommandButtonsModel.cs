@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using UnityEngine;
 using Zenject;
 
 public class CommandButtonsModel
@@ -19,14 +21,15 @@ public class CommandButtonsModel
     [Inject] private CommandCreatorBase<IStopCommand> _stopper;
     [Inject] private CommandCreatorBase<IMoveCommand> _mover;
     [Inject] private CommandCreatorBase<IPatrolCommand> _patroller;
-
+    [Inject] private CommandCreatorBase<IRendezvousPointCommand> _rendezvousPointer;
+    
     private bool _commandIsPending;
 
     #endregion
 
     #region Methods
 
-    public void OnCommandButtonClicked(ICommandExecutor commandExecutor)
+    public void OnCommandButtonClicked(ICommandExecutor commandExecutor, ICommandQueueManager commandQueueManager)
     {
         
         if (_commandIsPending)
@@ -41,27 +44,43 @@ public class CommandButtonsModel
         OnCommandAccepted?.Invoke(commandExecutor);
 
         _unitProducer
-            .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, command));
+            .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, commandQueueManager, command));
         
         _attacker
-            .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, command));
+            .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, commandQueueManager, command));
         
         _stopper
-            .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, command));
+            .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, commandQueueManager, command));
         
         _mover
-            .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, command));
+            .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, commandQueueManager, command));
         
         _patroller
-            .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, command));
+            .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, commandQueueManager, command));
+
+        _rendezvousPointer
+            .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, commandQueueManager, command));
 
     }
 
-    public void executeCommandWrapper(ICommandExecutor commandExecutor, object command)
+    public void executeCommandWrapper(ICommandExecutor commandExecutor, ICommandQueueManager commandQueueManager, object command)
     {
 
-        commandExecutor.ExecuteCommand(command);
+        if (commandQueueManager != null)
+        {
+            if (command is IStopCommand
+                || !(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+            {
+                commandQueueManager.Clear();
+            };
 
+            commandQueueManager.Enqueue(commandExecutor, command);
+        }
+        else
+        {
+            commandExecutor.ExecuteCommand(command);
+        };
+        
         _commandIsPending = false;
 
         OnCommandSent?.Invoke();
@@ -93,6 +112,9 @@ public class CommandButtonsModel
             .ProcessCancel();
 
         _patroller
+            .ProcessCancel();
+
+        _rendezvousPointer
             .ProcessCancel();
 
         OnCommandCancel?.Invoke();

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitable<T>, IReactiveSubscriber<T>, IDisposableAdvanced
@@ -20,6 +19,8 @@ public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitabl
     #region Interfaces Methods
 
     public abstract IAwaiter<T> GetAwaiter();
+
+    public abstract IDisposable Subscribe(IObserver<T> observer);
 
     public abstract void Subscribe(Action<T> notification);
 
