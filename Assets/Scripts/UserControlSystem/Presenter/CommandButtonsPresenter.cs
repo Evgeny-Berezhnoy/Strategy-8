@@ -21,17 +21,15 @@ public class CommandButtonsPresenter : MonoBehaviour
 
     private void Start()
     {
-
         _view.OnClick               += _model.OnCommandButtonClicked;
 
         _model.OnCommandSent        += _view.UnblockAllInteractions;
         _model.OnCommandCancel      += _view.UnblockAllInteractions;
         _model.OnCommandAccepted    += _view.BlockInteractions;
 
-        _selectable.OnNewValue      += onSelected;
+        _selectable.Subscribe(gameObject, onSelected);
         
         onSelected(_selectable.CurrentValue);
-
     }
 
     #endregion
@@ -40,19 +38,11 @@ public class CommandButtonsPresenter : MonoBehaviour
 
     private void onSelected(ISelectable selectable)
     {
-
-        if (_currentSelectable == selectable)
-        {
-
-            return;
-        
-        };
-
+        if (_currentSelectable == selectable) return;
+    
         if(_currentSelectable != null)
         {
-
             _model.OnSelectionChanged();
-
         };
 
         _currentSelectable = selectable;
@@ -61,15 +51,12 @@ public class CommandButtonsPresenter : MonoBehaviour
         
         if (selectable != null)
         {
-            
             var commandExecutors = new List<ICommandExecutor>();
             
             commandExecutors.AddRange((selectable as Component)?.GetComponentsInParent<ICommandExecutor>());
             
             _view.MakeLayout(commandExecutors);
-        
         };
-
     }
 
     #endregion

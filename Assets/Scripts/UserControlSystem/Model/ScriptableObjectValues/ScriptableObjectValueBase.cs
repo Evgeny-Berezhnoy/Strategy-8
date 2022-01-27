@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitable<T>
+public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitable<T>, IReactiveSubscriber<T>, IDisposableAdvanced
 {
 
-    #region Fields
+    #region Interfaces Properties
 
-    public Action<T> OnNewValue;
+    public bool IsDisposed { get; private set; } 
 
     #endregion
 
@@ -18,30 +19,39 @@ public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitabl
 
     #region Interfaces Methods
 
-    public IAwaiter<T> GetAwaiter()
-    {
-        
-        return new NewValueNotifier<ScriptableObjectValueBase<T>, T>(this);
+    public abstract IAwaiter<T> GetAwaiter();
 
+    public abstract void Subscribe(Action<T> notification);
+
+    public abstract void Subscribe(Predicate<bool> subscribtionRetentionPredicate, Action<T> notification);
+    
+    public abstract void Subscribe(GameObject visitor, Action<T> notification);
+
+    public abstract void Notify();
+
+    public virtual void Dispose()
+    {
+        if (IsDisposed) return;
+
+        IsDisposed = true;
+
+        GC.SuppressFinalize(this);
     }
 
     #endregion
 
     #region Methods
 
-    public void SetValue(T value)
+    public virtual void SetValue(T value)
     {
-
         CurrentValue = value;
-
-        OnNewValue?.Invoke(value);
-
     }
 
     #endregion
 
     #region Nested classes
 
+    // Example
     public class NewValueNotifier<TBase, TResult> : AwaiterBase<TBase, TResult>
         where TBase : ScriptableObjectValueBase<TResult>
     {
@@ -49,14 +59,14 @@ public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitabl
         #region Fields
 
         private TResult _result;
-        
+
         #endregion
 
         #region Constructors
 
         public NewValueNotifier(TBase baseObject) : base(baseObject)
         {
-            _baseObject.OnNewValue += OnBreak;
+            _baseObject.Subscribe(_ => !IsCompleted, value => OnNewValue(value));
         }
 
         #endregion
@@ -72,10 +82,9 @@ public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitabl
 
         #region Methods
 
-        protected void OnBreak(TResult obj)
+        protected void OnNewValue(TResult obj)
         {
-            _result                 = obj;
-            _baseObject.OnNewValue -= OnBreak;
+            _result = obj;
             
             OnBreak();
         }
