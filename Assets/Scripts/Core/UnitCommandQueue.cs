@@ -1,21 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using Zenject;
 
-public class UnitCommandQueue : MonoBehaviour, ICommandQueueManager
+public class UnitCommandQueue : MonoBehaviour, ICommandQueueManager, ICancellableTokenManager
 {
 
     #region Fields
 
     private Queue<ExecutorWrapper> _commandQueue;
 
-    private CancellationTokenManager _cancellationTokenManager;
+    [Inject] private CancellationTokenManager _cancellationTokenManager;
 
     #endregion
 
     #region Interfaces properties
 
     public Queue<ExecutorWrapper> CommandQueue => _commandQueue;
+    public CancellationTokenManager CancellationTokenManager => _cancellationTokenManager;
 
     #endregion
 
@@ -24,14 +26,12 @@ public class UnitCommandQueue : MonoBehaviour, ICommandQueueManager
     private void Awake()
     {
         
-        _commandQueue               = new Queue<ExecutorWrapper>();
-        _cancellationTokenManager   = new CancellationTokenManager();
+        _commandQueue = new Queue<ExecutorWrapper>();
 
     }
 
     private void Update()
     {
-
         if (_cancellationTokenManager.TokenIsActive
             || _commandQueue.Count == 0)
         {
@@ -61,7 +61,11 @@ public class UnitCommandQueue : MonoBehaviour, ICommandQueueManager
         
         if (_cancellationTokenManager.TokenIsActive)
         {
-            _cancellationTokenManager.CancelToken();
+            try
+            {
+                _cancellationTokenManager.CancelToken();
+            }
+            catch { };
         };
     }
 
@@ -73,22 +77,13 @@ public class UnitCommandQueue : MonoBehaviour, ICommandQueueManager
     {
         try
         {
-            var taskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            await executorWrapper.CommandExecutor.ExecuteCommand(executorWrapper.Command);
 
-            await 
-                Task.Factory
-                .StartNew(async () =>
-                {
-
-                    await executorWrapper.CommandExecutor.ExecuteCommand(executorWrapper.Command);
-
-                    _cancellationTokenManager.CancelToken();
-
-                }, _cancellationTokenManager.CreateToken(), TaskCreationOptions.None, taskScheduler);
-
+            _cancellationTokenManager.CancelToken();
         }
         finally 
         { };
+
     }
 
     #endregion

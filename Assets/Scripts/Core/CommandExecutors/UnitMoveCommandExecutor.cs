@@ -1,14 +1,17 @@
 ﻿using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
+using Zenject;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(UnitMovementStop))]
-public class UnitMoveCommand : CommandExecutorBase<IMoveCommand>, ICancellableTokenManager
+public class UnitMoveCommandExecutor : CommandExecutorBase<IMoveCommand>, ICancellableTokenManager
 {
 
     #region Fields
+
+    [Inject] private CancellationTokenManager _cancellationTokenManager;
 
     private Animator _animator;
     private NavMeshAgent _navMeshAgent;
@@ -21,7 +24,7 @@ public class UnitMoveCommand : CommandExecutorBase<IMoveCommand>, ICancellableTo
 
     #region Interfaces Properties
 
-    public CancellationTokenManager CancellationTokenManager { get; set; }
+    public CancellationTokenManager CancellationTokenManager => _cancellationTokenManager;
 
     #endregion
 
@@ -47,10 +50,18 @@ public class UnitMoveCommand : CommandExecutorBase<IMoveCommand>, ICancellableTo
         {
             await _stop.WithCancellation(CancellationTokenManager.CreateToken());
         }
-        finally { CancellationTokenManager.CancelToken(); };
+        catch
+        {
 
-        _navMeshAgent.destination = transform.position;
-        _animator.SetTrigger(Idle);
+        }
+        finally
+        {
+            _navMeshAgent.destination = transform.position;
+            _animator.SetTrigger(Idle);
+
+            CancellationTokenManager.CancelToken();
+        };
+
     }
 
     #endregion

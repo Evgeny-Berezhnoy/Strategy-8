@@ -19,7 +19,7 @@ public class CancellationTokenManager
 
     public void CancelToken()
     {
-        if (_cancellationTokenSource != null)
+        if (_cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested)
         {
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();

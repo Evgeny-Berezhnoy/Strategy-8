@@ -7,8 +7,9 @@ public abstract class AwaiterBase<TBase, TResult> : IAwaiter<TResult>
     #region Fields
 
     protected readonly TBase _baseObject;
+    protected TResult _result;
     protected Action _continuation;
-    
+
     #endregion
 
     #region Interfaces Properties
@@ -47,8 +48,18 @@ public abstract class AwaiterBase<TBase, TResult> : IAwaiter<TResult>
         _continuation?.Invoke();
     }
 
-    public abstract TResult GetResult();
-    
+    protected virtual void OnBreak(TResult result)
+    {
+        _result = result;
+        
+        OnBreak();
+    }
+
+    public virtual TResult GetResult()
+    {
+        return _result;
+    }
+
     #endregion
 
 }

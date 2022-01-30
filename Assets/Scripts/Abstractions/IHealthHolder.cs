@@ -3,8 +3,8 @@
 
     #region Properties
 
-    float Health { get; }
-    float MaxHealth { get; }
+    int Health { get; }
+    int MaxHealth { get; }
 
     #endregion
 
