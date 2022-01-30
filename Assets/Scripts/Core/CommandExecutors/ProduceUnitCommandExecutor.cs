@@ -3,6 +3,7 @@ using UniRx;
 using Zenject;
 using System.Threading.Tasks;
 
+[RequireComponent(typeof(FactionMember))]
 public class ProduceUnitCommandExecutor : CommandExecutorBase<IProduceUnitCommand>, IUnitProducer
 {
 
@@ -13,9 +14,13 @@ public class ProduceUnitCommandExecutor : CommandExecutorBase<IProduceUnitComman
     [SerializeField] private Transform _instantiationPoint;
     [SerializeField] private Transform _pivotPoint;
 
+    [Inject] DiContainer _diContainer;
+
     [Inject] private CommandCreatorBase<IMoveCommand> _mover;
     
     private ReactiveCollection<IUnitProductionTask> _queue = new ReactiveCollection<IUnitProductionTask>();
+
+    private IFactionMember _factionMember;
 
     #endregion
 
@@ -29,6 +34,11 @@ public class ProduceUnitCommandExecutor : CommandExecutorBase<IProduceUnitComman
 
     #region Unity events
 
+    private void Awake()
+    {
+        _factionMember = GetComponent<IFactionMember>();
+    }
+
     private void Update()
     {
         if (_queue.Count == 0) return;
@@ -39,18 +49,23 @@ public class ProduceUnitCommandExecutor : CommandExecutorBase<IProduceUnitComman
 
         if(innerTask.TimeLeft <= 0)
         {
-            var unit = Instantiate(
-                            innerTask.UnitPrefab, 
-                            new Vector3(_instantiationPoint.position.x, 0, _instantiationPoint.position.z),
-                            Quaternion.identity,
-                            _unitParent);
+            var unit = 
+                _diContainer.InstantiatePrefab(
+                    innerTask.UnitPrefab,
+                    new Vector3(_instantiationPoint.position.x, 0, _instantiationPoint.position.z),
+                    Quaternion.identity,
+                    _unitParent);
 
             var moveCommandExecutor = unit.GetComponentInParent<CommandExecutorBase<IMoveCommand>>();
 
             if (moveCommandExecutor)
             {
-                _mover.ProcessCommandExecutor(moveCommandExecutor, command => moveCommandExecutor.ExecuteCommand(command), _pivotPoint.position);
+                _mover.ProcessCommandExecutor(moveCommandExecutor, async (command) => await moveCommandExecutor.ExecuteCommand(command), _pivotPoint.position);
             };
+
+            var unitFactionMember = unit.GetComponent<IFactionMember>();
+
+            unitFactionMember.SetFaction(_factionMember.FactionID);
 
             removeTaskAtIndex(0);
         };

@@ -3,7 +3,7 @@
 
     #region Fields
 
-    IPointable Target { get; }
+    IAttackable Target { get; }
 
     #endregion
 

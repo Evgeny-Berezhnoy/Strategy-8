@@ -115,15 +115,8 @@ public class UnitMovementStop : MonoBehaviour, IAwaitable<Void>
         public StopAwaiter(UnitMovementStop baseObject) : base(baseObject)
         {
             _baseObject.OnStop += OnStop;
-        }
 
-        #endregion
-
-        #region Interfaces Methods
-
-        public override Void GetResult()
-        {
-            return new Void();
+            _result = new Void();
         }
 
         #endregion
@@ -132,9 +125,9 @@ public class UnitMovementStop : MonoBehaviour, IAwaitable<Void>
 
         private void OnStop()
         {
-            _baseObject.OnStop -= OnStop;
-
             OnBreak();
+
+            _baseObject.OnStop -= OnStop;
         }
 
         #endregion

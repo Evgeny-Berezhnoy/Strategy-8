@@ -1,5 +1,4 @@
-﻿using System;
-using Zenject;
+﻿using Zenject;
 
 public class UIModelInstaller : MonoInstaller
 {
@@ -56,6 +55,10 @@ public class UIModelInstaller : MonoInstaller
         Container
             .Bind<BottomCenterModel>()
             .AsSingle();
+
+        Container
+            .Bind<CancellationTokenManager>()
+            .AsCached();
 
     }
 

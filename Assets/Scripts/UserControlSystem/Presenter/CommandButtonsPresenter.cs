@@ -10,7 +10,7 @@ public class CommandButtonsPresenter : MonoBehaviour
     [SerializeField] private CommandButtonsView _view;
 
     [Inject] private SelectableValue _selectable;
-    [Inject] private PointableValue _pointable;
+    [Inject] private AttackableValue _pointable;
     [Inject] private CommandButtonsModel _model;
 
     private ISelectable _currentSelectable;

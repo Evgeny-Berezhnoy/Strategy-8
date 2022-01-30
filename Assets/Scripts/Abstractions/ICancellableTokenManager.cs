@@ -3,7 +3,7 @@
 
     #region Properties
 
-    CancellationTokenManager CancellationTokenManager { get; set; }
+    CancellationTokenManager CancellationTokenManager { get; }
 
     #endregion
 

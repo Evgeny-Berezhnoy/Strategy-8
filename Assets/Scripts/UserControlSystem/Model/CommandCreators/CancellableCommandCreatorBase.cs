@@ -9,12 +9,13 @@ public abstract class CancellableCommandCreatorBase<TCommand, TArgument> : Comma
 
     [Inject] private AssetsContext _context;
     [Inject] private IAwaitable<TArgument> _awaitableArgument;
-    
+    [Inject] private CancellationTokenManager _cancellationTokenManager;
+
     #endregion
 
     #region Properties
 
-    public CancellationTokenManager CancellationTokenManager { get; set; }
+    public CancellationTokenManager CancellationTokenManager => _cancellationTokenManager;
 
     #endregion
 
@@ -22,12 +23,6 @@ public abstract class CancellableCommandCreatorBase<TCommand, TArgument> : Comma
 
     protected override async void classSpecificCommandCreation(Action<TCommand> creationCallback)
     {
-
-        if (CancellationTokenManager == null)
-        {
-            CancellationTokenManager = new CancellationTokenManager();
-        };
-
         try
         {
             var argument = await _awaitableArgument.WithCancellation(CancellationTokenManager.CreateToken());

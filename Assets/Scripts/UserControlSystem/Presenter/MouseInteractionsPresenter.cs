@@ -14,7 +14,7 @@ public class MouseInteractionsPresenter : MonoBehaviour
     [SerializeField] private Transform _groundTransform;
 
     [Inject] private SelectableValue _selectedObject;
-    [Inject] private PointableValue _pointedObject;
+    [Inject] private AttackableValue _attackableObject;
     [Inject] private OutlinableValue _outlinedObject;
     [Inject] private Vector3Value _groundClicksRMB;
 
@@ -53,13 +53,13 @@ public class MouseInteractionsPresenter : MonoBehaviour
         if (hit)
         {
 
-            var pointable = GetHitObject<IPointable>(enter);
+            var pointable = GetHitObject<IAttackable>(enter);
 
             if (pointable != null)
             {
 
-                _pointedObject.SetValue(pointable);
-                _pointedObject.Notify();
+                _attackableObject.SetValue(pointable);
+                _attackableObject.Notify();
 
                 return;
 

@@ -57,37 +57,11 @@ public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitabl
         where TBase : ScriptableObjectValueBase<TResult>
     {
 
-        #region Fields
-
-        private TResult _result;
-
-        #endregion
-
         #region Constructors
 
         public NewValueNotifier(TBase baseObject) : base(baseObject)
         {
-            _baseObject.Subscribe(_ => !IsCompleted, value => OnNewValue(value));
-        }
-
-        #endregion
-
-        #region Base Methods
-
-        public override TResult GetResult()
-        {
-            return _result;
-        }
-
-        #endregion
-
-        #region Methods
-
-        protected void OnNewValue(TResult obj)
-        {
-            _result = obj;
-            
-            OnBreak();
+            _baseObject.Subscribe(_ => !IsCompleted, value => OnBreak(value));
         }
 
         #endregion

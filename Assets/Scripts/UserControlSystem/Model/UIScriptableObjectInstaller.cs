@@ -12,7 +12,7 @@ public class UIScriptableObjectInstaller : ScriptableObjectInstaller
     [SerializeField] private Vector3Value _vector3Value;
     [SerializeField] private AssetsContext _context;
     [SerializeField] private OutlinableValue _outlinableValue;
-    [SerializeField] private PointableValue _pointableValue;
+    [SerializeField] private AttackableValue _pointableValue;
     [SerializeField] private Sprite _zerglingSprite;
 
     #endregion
@@ -47,11 +47,11 @@ public class UIScriptableObjectInstaller : ScriptableObjectInstaller
             .FromInstance(_outlinableValue);
 
         Container
-            .Bind<PointableValue>()
+            .Bind<AttackableValue>()
             .FromInstance(_pointableValue);
         
         Container
-            .Bind<IAwaitable<IPointable>>()
+            .Bind<IAwaitable<IAttackable>>()
             .FromInstance(_pointableValue);
 
         Container
