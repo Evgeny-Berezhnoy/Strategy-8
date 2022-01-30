@@ -1,16 +1,18 @@
-﻿using UnityEngine;
-using Zenject;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 
 public abstract class CommandExecutorBase<T> : MonoBehaviour, ICommandExecutor
     where T : ICommand
 {
 
     #region Interfaces Methods
-    
-    public void ExecuteCommand(object command)
+
+    public async Task<Husk> ExecuteCommand(object command)
     {
 
-        ExecuteSpecificCommand((T)command);
+        await ExecuteSpecificCommand((T)command);
+
+        return new Husk();
 
     }
 
@@ -18,7 +20,7 @@ public abstract class CommandExecutorBase<T> : MonoBehaviour, ICommandExecutor
 
     #region Methods
 
-    public abstract void ExecuteSpecificCommand(T command);
+    public async virtual Task ExecuteSpecificCommand(T command) { }
 
     #endregion
 

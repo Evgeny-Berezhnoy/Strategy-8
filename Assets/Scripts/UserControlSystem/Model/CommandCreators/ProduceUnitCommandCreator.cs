@@ -7,6 +7,7 @@ public class ProduceUnitCommandCreator : CommandCreatorBase<IProduceUnitCommand>
     #region Fields
 
     [Inject] private AssetsContext _context;
+    [Inject] private DiContainer _diContainer;
 
     #endregion
 
@@ -14,9 +15,11 @@ public class ProduceUnitCommandCreator : CommandCreatorBase<IProduceUnitCommand>
 
     protected override void classSpecificCommandCreation(Action<IProduceUnitCommand> creationCallback)
     {
+        var produceUnitCommand = _context.Inject(new ProduceUnitCommand());
 
-        creationCallback?.Invoke(_context.Inject(new ProduceUnitCommandHeir()));
+        _diContainer.Inject(produceUnitCommand);
 
+        creationCallback?.Invoke(produceUnitCommand);
     }
 
     #endregion
