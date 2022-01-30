@@ -3,17 +3,15 @@
 
     #region Interface Properties
 
-    public IPointable Target { get; private set; }
+    public IAttackable Target { get; private set; }
 
     #endregion
 
     #region Constructors
 
-    public AttackCommand(IPointable target)
+    public AttackCommand(IAttackable target)
     {
-
         Target = target;
-
     }
 
     #endregion

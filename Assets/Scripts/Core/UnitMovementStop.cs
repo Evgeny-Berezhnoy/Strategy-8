@@ -16,7 +16,13 @@ public class UnitMovementStop : MonoBehaviour, IAwaitable<Void>
 
     #region Fields
 
+    [SerializeField] private Collider _collider;
+    [Range(0f, 10f)] [SerializeField] private float _collisionTimeThreshold = 3;
+
     private NavMeshAgent _agent;
+
+    private int _obstacleContactCount   = 0;
+    private float _collisionTimeCurrent = 0;
 
     #endregion
 
@@ -25,6 +31,11 @@ public class UnitMovementStop : MonoBehaviour, IAwaitable<Void>
     private void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
+
+        if (!_collider)
+        {
+            throw new MissingComponentException($"{GetType()} requires {typeof(Collider)} component set!");
+        };
     }
 
     private void Update()
@@ -34,6 +45,38 @@ public class UnitMovementStop : MonoBehaviour, IAwaitable<Void>
                 && (_agent.hasPath || _agent.velocity.sqrMagnitude == 0))
         {
             OnStop?.Invoke();
+        }
+        else if(_agent.hasPath)
+        {
+            if(_obstacleContactCount == 0)
+            {
+                _collisionTimeCurrent = 0;
+            }
+            else
+            {
+                _collisionTimeCurrent += Time.deltaTime;
+
+                if(_collisionTimeCurrent >= _collisionTimeThreshold)
+                {
+                    OnStop?.Invoke();
+                };
+            };
+        };
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (IsObstacle(collision) != null)
+        {
+            _obstacleContactCount++;
+        };
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (IsObstacle(collision))
+        {
+            _obstacleContactCount--;
         };
     }
 
@@ -45,12 +88,26 @@ public class UnitMovementStop : MonoBehaviour, IAwaitable<Void>
     {
         return new StopAwaiter(this);
     }
-    
+
+    #endregion
+
+    #region Methods
+
+    private NavMeshObstacle IsObstacle(Collision collision)
+    {
+        return collision
+                .collider
+                .transform
+                .parent
+                .gameObject
+                .GetComponentInChildren<NavMeshObstacle>();
+    }
+
     #endregion
 
     #region Nested classes
 
-    public class StopAwaiter : AwaiterBase<UnitMovementStop, Void>
+    private class StopAwaiter : AwaiterBase<UnitMovementStop, Void>
     {
 
         #region Constructors
@@ -58,15 +115,8 @@ public class UnitMovementStop : MonoBehaviour, IAwaitable<Void>
         public StopAwaiter(UnitMovementStop baseObject) : base(baseObject)
         {
             _baseObject.OnStop += OnStop;
-        }
 
-        #endregion
-
-        #region Interfaces Methods
-
-        public override Void GetResult()
-        {
-            return new Void();
+            _result = new Void();
         }
 
         #endregion
@@ -75,9 +125,9 @@ public class UnitMovementStop : MonoBehaviour, IAwaitable<Void>
 
         private void OnStop()
         {
-            _baseObject.OnStop -= OnStop;
-
             OnBreak();
+
+            _baseObject.OnStop -= OnStop;
         }
 
         #endregion

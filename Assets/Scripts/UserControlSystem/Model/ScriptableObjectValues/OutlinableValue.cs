@@ -48,19 +48,18 @@ public class OutlinableValue : ScriptableObject
 
     private void ToggleCurrentValues(bool enabled)
     {
-
         if (_currentValues != null)
         {
-
             for (int i = 0; i < _currentValues.Count; i++)
             {
+                var currentValue = _currentValues[i]?.OutlineDraw;
 
-                _currentValues[i].OutlineDraw.enabled = enabled;
-
+                if(currentValue != null)
+                {
+                    currentValue.enabled = enabled;
+                };
             };
-
         };
-
     }
 
     #endregion

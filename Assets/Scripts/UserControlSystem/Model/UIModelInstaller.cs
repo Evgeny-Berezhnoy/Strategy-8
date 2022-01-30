@@ -34,8 +34,31 @@ public class UIModelInstaller : MonoInstaller
             .AsTransient();
 
         Container
+            .Bind<CommandCreatorBase<IRendezvousPointCommand>>()
+            .To<RendezvousPointCommandCreator>()
+            .AsTransient();
+
+        Container
             .Bind<CommandButtonsModel>()
             .AsTransient();
+
+        Container
+            .Bind<float>()
+            .WithId("Zergling")
+            .FromInstance(0.5f);
+        
+        Container
+            .Bind<string>()
+            .WithId("Zergling")
+            .FromInstance("Zergling");
+
+        Container
+            .Bind<BottomCenterModel>()
+            .AsSingle();
+
+        Container
+            .Bind<CancellationTokenManager>()
+            .AsCached();
 
     }
 

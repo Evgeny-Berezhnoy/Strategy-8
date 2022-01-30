@@ -1,9 +1,9 @@
-﻿public class AttackCommandCreator : CancellableCommandCreatorBase<IAttackCommand, IPointable>
+﻿public class AttackCommandCreator : CancellableCommandCreatorBase<IAttackCommand, IAttackable>
 {
 
     #region Base Methods
 
-    protected override IAttackCommand CreateCommand(IPointable argument)
+    protected override IAttackCommand CreateCommand(IAttackable argument)
     {
         return new AttackCommand(argument);
     }

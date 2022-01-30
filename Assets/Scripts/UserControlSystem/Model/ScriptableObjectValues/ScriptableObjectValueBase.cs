@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitable<T>, IReactiveSubscriber<T>, IDisposableAdvanced
@@ -20,6 +19,8 @@ public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitabl
     #region Interfaces Methods
 
     public abstract IAwaiter<T> GetAwaiter();
+
+    public abstract IDisposable Subscribe(IObserver<T> observer);
 
     public abstract void Subscribe(Action<T> notification);
 
@@ -56,37 +57,11 @@ public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitabl
         where TBase : ScriptableObjectValueBase<TResult>
     {
 
-        #region Fields
-
-        private TResult _result;
-
-        #endregion
-
         #region Constructors
 
         public NewValueNotifier(TBase baseObject) : base(baseObject)
         {
-            _baseObject.Subscribe(_ => !IsCompleted, value => OnNewValue(value));
-        }
-
-        #endregion
-
-        #region Base Methods
-
-        public override TResult GetResult()
-        {
-            return _result;
-        }
-
-        #endregion
-
-        #region Methods
-
-        protected void OnNewValue(TResult obj)
-        {
-            _result = obj;
-            
-            OnBreak();
+            _baseObject.Subscribe(_ => !IsCompleted, value => OnBreak(value));
         }
 
         #endregion

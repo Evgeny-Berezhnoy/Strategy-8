@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Zenject;
 
 public class ProduceUnitCommand : IProduceUnitCommand
 {
@@ -10,6 +11,10 @@ public class ProduceUnitCommand : IProduceUnitCommand
     #endregion
 
     #region Interfaces Properties
+
+    [Inject(Id = "Zergling")] public float ProductionTime { get; }
+    [Inject(Id = "Zergling")] public Sprite Icon { get; }
+    [Inject(Id = "Zergling")] public string UnitName { get; }
 
     public GameObject UnitPrefab => _unitPrefab;
 

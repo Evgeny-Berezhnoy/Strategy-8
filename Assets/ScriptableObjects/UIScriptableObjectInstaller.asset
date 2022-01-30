@@ -17,5 +17,4 @@ MonoBehaviour:
   _context: {fileID: 11400000, guid: 11d312fcdab3b0041b8bc749d7a06383, type: 2}
   _outlinableValue: {fileID: 11400000, guid: 4a246d31f28c6144790931706e5fa8a1, type: 2}
   _pointableValue: {fileID: 11400000, guid: de92502efa15b5f4e97cd8edf6ee70d6, type: 2}
-  _cancellationTokenManager: {fileID: 11400000, guid: c1ca000725dc58f489b7a0e6fb083278,
-    type: 2}
+  _zerglingSprite: {fileID: 21300000, guid: aa7377b88c3cbea46916125bbdcaffbf, type: 3}

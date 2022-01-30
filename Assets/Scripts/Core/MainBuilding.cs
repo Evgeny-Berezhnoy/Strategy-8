@@ -1,45 +1,43 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(OutlineDraw))]
-public class MainBuilding : CommandExecutorBase<IProduceUnitCommand>, ISelectable, IOutlinable, IPointable
+public class MainBuilding : MonoBehaviour, ISelectable, IOutlinable, IAttackable
 {
 
     #region Fields
 
-    [SerializeField] private Transform _unitsParent;
-    [SerializeField] private float _maxHealth = 1000;
+    [SerializeField] private Transform _unitParent;
+    [SerializeField] private int _maxHealth = 1000;
     [SerializeField] private Sprite _icon;
     [SerializeField] private OutlineDraw _outlineDraw;
-
-    private float _health = 1000;
+    
+    private int _health = 100;
 
     #endregion
 
     #region Interfaces Properties
 
-    public float Health => _health;
-    public float MaxHealth => _maxHealth;
+    public int Health => _health;
+    public int MaxHealth => _maxHealth;
     public Sprite Icon => _icon;
     public OutlineDraw OutlineDraw => _outlineDraw;
 
     #endregion
 
-    #region Base Methods
+    #region Interfaces Methods
 
-    public override void ExecuteSpecificCommand(IProduceUnitCommand command)
+
+    public void RecieveDamage(int amount)
     {
-
-        Instantiate(
-            command.UnitPrefab,
-            new Vector3(
-                Random.Range(transform.position.x - 10, transform.position.x + 10),
-                0,
-                Random.Range(transform.position.z - 10, transform.position.z + 10)),
-                Quaternion.identity,
-                _unitsParent);
-
+        if (_health <= 0) return;
+        
+        _health -= amount;
+        
+        if (_health <= 0)
+        {
+            Destroy(gameObject);
+        };
     }
-
     #endregion
 
 }

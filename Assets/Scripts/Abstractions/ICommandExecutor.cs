@@ -1,9 +1,11 @@
-﻿public interface ICommandExecutor
+﻿using System.Threading.Tasks;
+
+public interface ICommandExecutor
 {
 
     #region Methods
 
-    void ExecuteCommand(object command);
+    Task<Husk> ExecuteCommand(object command);
 
     #endregion
 

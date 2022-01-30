@@ -14,9 +14,7 @@ public class StopCommandCreator : CommandCreatorBase<IStopCommand>
 
     protected override void classSpecificCommandCreation(Action<IStopCommand> creationCallback)
     {
-
         creationCallback?.Invoke(_context.Inject(new StopCommand()));
-
     }
 
     #endregion

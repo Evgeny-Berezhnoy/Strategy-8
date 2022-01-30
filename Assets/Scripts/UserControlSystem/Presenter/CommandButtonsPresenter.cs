@@ -10,7 +10,7 @@ public class CommandButtonsPresenter : MonoBehaviour
     [SerializeField] private CommandButtonsView _view;
 
     [Inject] private SelectableValue _selectable;
-    [Inject] private PointableValue _pointable;
+    [Inject] private AttackableValue _pointable;
     [Inject] private CommandButtonsModel _model;
 
     private ISelectable _currentSelectable;
@@ -54,8 +54,11 @@ public class CommandButtonsPresenter : MonoBehaviour
             var commandExecutors = new List<ICommandExecutor>();
             
             commandExecutors.AddRange((selectable as Component)?.GetComponentsInParent<ICommandExecutor>());
-            
-            _view.MakeLayout(commandExecutors);
+
+            var commandQueueManager = (selectable as Component)?.GetComponentInParent<ICommandQueueManager>();
+
+            _view.MakeLayout(commandExecutors, commandQueueManager);
+
         };
     }
 
