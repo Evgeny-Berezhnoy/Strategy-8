@@ -26,7 +26,6 @@ public class CommandButtonsView : MonoBehaviour
 
     private void Start()
     {
-
 		_buttonsByExecutorType = new Dictionary<Type, Button>();
 		_buttonsByExecutorType.Add(typeof(CommandExecutorBase<IAttackCommand>), _attackButton);
 		_buttonsByExecutorType.Add(typeof(CommandExecutorBase<IMoveCommand>), _moveButton);
@@ -34,7 +33,6 @@ public class CommandButtonsView : MonoBehaviour
 		_buttonsByExecutorType.Add(typeof(CommandExecutorBase<IStopCommand>), _stopButton);
 		_buttonsByExecutorType.Add(typeof(CommandExecutorBase<IProduceUnitCommand>), _produceUnitButton);
 		_buttonsByExecutorType.Add(typeof(CommandExecutorBase<IRendezvousPointCommand>), _rendezvousPointButton);
-
 	}
 
     #endregion
@@ -43,23 +41,18 @@ public class CommandButtonsView : MonoBehaviour
 
 	public void BlockInteractions(ICommandExecutor commandExecutor)
     {
-
 		UnblockAllInteractions();
 
 		GetButtonGameobjectByType(commandExecutor.GetType()).GetComponent<Selectable>().interactable = false;
-
     }
 
 	public void UnblockAllInteractions()
     {
-
 		SetInteractable(true);
-
     }
 
 	public void SetInteractable(bool value)
     {
-
 		_attackButton
 			.GetComponent<Selectable>().interactable = value;
 		
@@ -77,53 +70,40 @@ public class CommandButtonsView : MonoBehaviour
 
 		_rendezvousPointButton
 			.GetComponent<Selectable>().interactable = value;
-
 	}
 
 	public void MakeLayout(IEnumerable<ICommandExecutor> commandExecutors, ICommandQueueManager commandQueueManager)
     {
-
 		foreach(var currentExecutor in commandExecutors)
         {
-
 			var button = GetButtonByType(currentExecutor.GetType());
 			
 			button.gameObject.SetActive(true);
 			button.onClick.AddListener(() => OnClick?.Invoke(currentExecutor, commandQueueManager));
-
         };
-
     }
 
 	private GameObject GetButtonGameobjectByType(Type executorInstanceType)
     {
-
 		return GetButtonByType(executorInstanceType).gameObject;
-
 	}
 
 	private Button GetButtonByType(Type executorInstanceType)
     {
-
 		return
 			_buttonsByExecutorType
 				.Where(type => type.Key.IsAssignableFrom(executorInstanceType))
 				.First()
 				.Value;
-
 	}
 
 	public void Clear()
     {
-
 		foreach(var keyValuePair in _buttonsByExecutorType)
         {
-
 			keyValuePair.Value.onClick.RemoveAllListeners();
 			keyValuePair.Value.gameObject.SetActive(false);
-
-		}
-
+		};
     }
 
     #endregion

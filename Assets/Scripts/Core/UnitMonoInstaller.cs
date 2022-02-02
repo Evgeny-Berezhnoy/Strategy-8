@@ -1,13 +1,14 @@
-﻿using Zenject;
+﻿using UnityEngine;
+using Zenject;
 
+/*[RequireComponent(typeof(AttackerParallelInfoUpdater))]
+[RequireComponent(typeof(FactionMemberParrallelInfoUpdater))]*/
 public class UnitMonoInstaller : MonoInstaller
 {
-
     #region Base methods
 
     public override void InstallBindings()
     {
-
         Container
             .Bind<CancellationTokenManager>()
             .AsSingle();
@@ -36,8 +37,14 @@ public class UnitMonoInstaller : MonoInstaller
             .WithId("FluctuationDistance")
             .FromInstance(3f);
 
+        /*Container
+            .Bind<ITickable>()
+            .FromInstance(GetComponent<AttackerParallelInfoUpdater>());
+        
+        Container
+            .Bind<ITickable>()
+            .FromInstance(GetComponent<FactionMemberParrallelInfoUpdater>());*/
     }
 
     #endregion
-
 }

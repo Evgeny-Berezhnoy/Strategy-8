@@ -1,5 +1,7 @@
-﻿using Zenject;
+﻿using UnityEngine;
+using Zenject;
 
+[RequireComponent(typeof(FactionMemberParrallelInfoUpdater))]
 public class BuildingMonoInstaller : MonoInstaller
 {
 
@@ -17,6 +19,9 @@ public class BuildingMonoInstaller : MonoInstaller
             .To<MoveCommandCreator>()
             .AsTransient();
 
+        Container
+            .Bind<ITickable>()
+            .FromInstance(GetComponent<ITickable>());
     }
 
     #endregion

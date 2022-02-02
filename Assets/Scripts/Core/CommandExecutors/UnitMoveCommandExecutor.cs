@@ -6,7 +6,7 @@ using Zenject;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(UnitMovementStop))]
-public class UnitMoveCommandExecutor : CommandExecutorBase<IMoveCommand>, ICancellableTokenManager
+public class UnitMoveCommandExecutor : CommandExecutorBase<IMoveCommand>, ICancellableTokenManager, IAutomaticalMoveCommandAcceptor
 {
 
     #region Fields

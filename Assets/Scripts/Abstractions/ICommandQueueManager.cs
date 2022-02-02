@@ -5,6 +5,7 @@ public interface ICommandQueueManager
 
     #region Properties
 
+    ICommand CurrentCommand { get; }
     Queue<ExecutorWrapper> CommandQueue { get; }
 
     #endregion

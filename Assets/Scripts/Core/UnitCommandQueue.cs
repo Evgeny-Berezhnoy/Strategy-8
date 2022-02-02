@@ -8,14 +8,16 @@ public class UnitCommandQueue : MonoBehaviour, ICommandQueueManager, ICancellabl
 
     #region Fields
 
-    private Queue<ExecutorWrapper> _commandQueue;
-
     [Inject] private CancellationTokenManager _cancellationTokenManager;
+
+    private ICommand _currentCommand;
+    private Queue<ExecutorWrapper> _commandQueue;
 
     #endregion
 
     #region Interfaces properties
 
+    public ICommand CurrentCommand => _currentCommand;
     public Queue<ExecutorWrapper> CommandQueue => _commandQueue;
     public CancellationTokenManager CancellationTokenManager => _cancellationTokenManager;
 
@@ -77,9 +79,13 @@ public class UnitCommandQueue : MonoBehaviour, ICommandQueueManager, ICancellabl
     {
         try
         {
+            _currentCommand = (ICommand)executorWrapper.Command;
+
             await executorWrapper.CommandExecutor.ExecuteCommand(executorWrapper.Command);
 
             _cancellationTokenManager.CancelToken();
+
+            _currentCommand = null;
         }
         finally 
         { };

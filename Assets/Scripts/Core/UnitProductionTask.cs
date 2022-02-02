@@ -2,7 +2,6 @@
 
 public class UnitProductionTask : IUnitProductionTask
 {
-
     #region Interfaces properties
     
     public string UnitName { get; }
@@ -27,5 +26,4 @@ public class UnitProductionTask : IUnitProductionTask
     }
     
     #endregion
-
 }

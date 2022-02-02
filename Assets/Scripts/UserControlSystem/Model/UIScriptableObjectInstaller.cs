@@ -5,7 +5,6 @@ using Zenject;
 [CreateAssetMenu(fileName = nameof(UIScriptableObjectInstaller), menuName = "Strategy Game/" + nameof(UIScriptableObjectInstaller), order = 2)]
 public class UIScriptableObjectInstaller : ScriptableObjectInstaller
 {
-
     #region Fields
 
     [SerializeField] private SelectableValue _selectableValue;
@@ -13,7 +12,6 @@ public class UIScriptableObjectInstaller : ScriptableObjectInstaller
     [SerializeField] private AssetsContext _context;
     [SerializeField] private OutlinableValue _outlinableValue;
     [SerializeField] private AttackableValue _pointableValue;
-    [SerializeField] private Sprite _zerglingSprite;
 
     #endregion
 
@@ -21,7 +19,6 @@ public class UIScriptableObjectInstaller : ScriptableObjectInstaller
 
     public override void InstallBindings()
     {
-
         Container
             .Bind<SelectableValue>()
             .FromInstance(_selectableValue);
@@ -53,14 +50,7 @@ public class UIScriptableObjectInstaller : ScriptableObjectInstaller
         Container
             .Bind<IAwaitable<IAttackable>>()
             .FromInstance(_pointableValue);
-
-        Container
-            .Bind<Sprite>()
-            .WithId("Zergling")
-            .FromInstance(_zerglingSprite);
-
     }
 
     #endregion
-
 }

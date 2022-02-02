@@ -1,23 +1,34 @@
 ﻿using UnityEngine;
-using Zenject;
 
 public class ProduceUnitCommand : IProduceUnitCommand
 {
-
     #region Fields
 
-    [InjectAsset("Zergling")]private GameObject _unitPrefab;
+    private float _productionTime;
+    private Sprite _icon;
+    private string _unitName;
+    private GameObject _unitPrefab;
 
     #endregion
 
     #region Interfaces Properties
 
-    [Inject(Id = "Zergling")] public float ProductionTime { get; }
-    [Inject(Id = "Zergling")] public Sprite Icon { get; }
-    [Inject(Id = "Zergling")] public string UnitName { get; }
-
+    public float ProductionTime => _productionTime;
+    public Sprite Icon => _icon;
+    public string UnitName => _unitName;
     public GameObject UnitPrefab => _unitPrefab;
 
     #endregion
 
+    #region Consturctors
+
+    public ProduceUnitCommand(IProduceUnitCommandData data)
+    {
+        _productionTime = data.ProductionTime;
+        _icon           = data.Icon;
+        _unitName       = data.UnitName;
+        _unitPrefab     = data.UnitPrefab;
+    }
+
+    #endregion
 }
