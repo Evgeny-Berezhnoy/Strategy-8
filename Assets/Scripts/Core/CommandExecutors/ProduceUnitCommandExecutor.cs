@@ -4,23 +4,22 @@ using Zenject;
 using System.Threading.Tasks;
 
 [RequireComponent(typeof(FactionMember))]
-public class ProduceUnitCommandExecutor : CommandExecutorBase<IProduceUnitCommand>, IUnitProducer
+[RequireComponent(typeof(UnitCommandData))]
+public class ProduceUnitCommandExecutor : CommandExecutorBase<IProduceUnitCommand>, IUnitProducer, IProduceUnitCommandDataHolder
 {
-
     #region Fields
 
-    [SerializeField] private Transform _unitParent;
-    [SerializeField] private int _maximumUnitsInQueue = 6;
-    [SerializeField] private Transform _instantiationPoint;
-    [SerializeField] private Transform _pivotPoint;
+    [Inject] protected DiContainer _diContainer;
+    [Inject] protected CommandCreatorBase<IMoveCommand> _mover;
 
-    [Inject] DiContainer _diContainer;
+    [SerializeField] protected Transform _unitParent;
+    [SerializeField] [Range(1, 6)] protected int _maximumUnitsInQueue;
+    [SerializeField] protected Transform _instantiationPoint;
 
-    [Inject] private CommandCreatorBase<IMoveCommand> _mover;
-    
-    private ReactiveCollection<IUnitProductionTask> _queue = new ReactiveCollection<IUnitProductionTask>();
-
-    private IFactionMember _factionMember;
+    protected ReactiveCollection<IUnitProductionTask> _queue = new ReactiveCollection<IUnitProductionTask>();
+    protected Transform _pivotPoint;
+    protected IFactionMember _factionMember;
+    protected IProduceUnitCommandData _productionData;
 
     #endregion
 
@@ -29,17 +28,20 @@ public class ProduceUnitCommandExecutor : CommandExecutorBase<IProduceUnitComman
     public IReadOnlyReactiveCollection<IUnitProductionTask> Queue => _queue;
     public Transform PivotPoint => _pivotPoint;
     public Transform InstantiationPoint => _instantiationPoint;
+    public IProduceUnitCommandData ProductionData => _productionData;
 
     #endregion
 
     #region Unity events
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        _factionMember = GetComponent<IFactionMember>();
+        _factionMember  = GetComponent<IFactionMember>();
+        _pivotPoint     = GetComponent<MeetingPointCommandExecutor>().PivotPoint;
+        _productionData = GetComponent<UnitCommandData>();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (_queue.Count == 0) return;
 
@@ -100,8 +102,8 @@ public class ProduceUnitCommandExecutor : CommandExecutorBase<IProduceUnitComman
     #endregion
 
     #region Methods
-    
-    private void removeTaskAtIndex(int index)
+
+    protected void removeTaskAtIndex(int index)
     {
         for(int i = index; i < _queue.Count - 1; i++)
         {
@@ -112,5 +114,4 @@ public class ProduceUnitCommandExecutor : CommandExecutorBase<IProduceUnitComman
     }
 
     #endregion
-
 }

@@ -3,21 +3,22 @@ using Zenject;
 
 [RequireComponent(typeof(OutlineDraw))]
 [RequireComponent(typeof(Animator))]
-public class Unit : MonoBehaviour, ISelectable, IOutlinable, IAttackable, IDamageDealer, ICancellableTokenManager
+public class Unit : MonoBehaviour, ISelectable, IOutlinable, IAttackable, IDamageDealer, ICancellableTokenManager, IAutomaticAttacker
 {
 
     #region Fields
 
     [Inject] private CancellationTokenManager _cancellationTokenManager;
 
-    [SerializeField] private int _maxHealth = 100;
+    [SerializeField] [Range(0, 100)] private int _maxHealth;
+    [SerializeField] [Range(0, 50)] private int _damage = 25;
+    [SerializeField] [Range(0, 10)] private float _visionRadius = 5f;
     [SerializeField] private Sprite _icon;
-    [SerializeField] private OutlineDraw _outlineDraw;
-    [SerializeField] private int _damage = 25;
-
+    
     private int _health;
 
-    public Animator _animator;
+    private Animator _animator;
+    private OutlineDraw _outlineDraw;
 
     #endregion
 
@@ -29,6 +30,7 @@ public class Unit : MonoBehaviour, ISelectable, IOutlinable, IAttackable, IDamag
     public OutlineDraw OutlineDraw => _outlineDraw;
     public int Damage => _damage;
     public CancellationTokenManager CancellationTokenManager => _cancellationTokenManager;
+    public float VisionRadius => _visionRadius;
 
     #endregion
 
@@ -36,9 +38,9 @@ public class Unit : MonoBehaviour, ISelectable, IOutlinable, IAttackable, IDamag
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
+        _animator   = GetComponent<Animator>();
 
-        _health = _maxHealth;
+        _health     = _maxHealth;
     }
 
     #endregion

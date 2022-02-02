@@ -6,14 +6,14 @@ public abstract class CommandCreatorBase<T>
 
     #region Methods
 
-    protected abstract void classSpecificCommandCreation(Action<T> creationCallback);
+    protected virtual void classSpecificCommandCreation(Action<T> creationCallback) { }
 
     protected virtual void classSpecificCommandCreation(Action<T> creationCallback, object argument)
     {
         classSpecificCommandCreation(creationCallback);
     }
 
-    public ICommandExecutor ProcessCommandExecutor(ICommandExecutor commandExecutor, Action<T> callback)
+    public virtual ICommandExecutor ProcessCommandExecutor(ICommandExecutor commandExecutor, Action<T> callback)
     {
         var classSpecificExecutor = commandExecutor as CommandExecutorBase<T>;
 

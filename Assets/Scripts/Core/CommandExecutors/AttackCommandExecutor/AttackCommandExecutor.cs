@@ -44,9 +44,9 @@ public partial class AttackCommandExecutor : CommandExecutorBase<IAttackCommand>
 
     private void Awake()
     {
-        _animator               = GetComponent<Animator>();
-        _navMeshAgent           = GetComponent<NavMeshAgent>();
-        _damageDealer           = GetComponent<IDamageDealer>();
+        _animator       = GetComponent<Animator>();
+        _navMeshAgent   = GetComponent<NavMeshAgent>();
+        _damageDealer   = GetComponent<IDamageDealer>();
     }
 
     private void Update()

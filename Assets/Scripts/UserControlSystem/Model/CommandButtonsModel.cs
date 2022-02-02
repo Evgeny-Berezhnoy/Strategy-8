@@ -31,12 +31,9 @@ public class CommandButtonsModel
 
     public void OnCommandButtonClicked(ICommandExecutor commandExecutor, ICommandQueueManager commandQueueManager)
     {
-        
         if (_commandIsPending)
         {
-
             ProcessOnCancel();
-        
         };
 
         _commandIsPending = true;
@@ -60,7 +57,17 @@ public class CommandButtonsModel
 
         _rendezvousPointer
             .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, commandQueueManager, command));
+    }
 
+    public void OnPositionPointed(ICommandExecutor commandExecutor, ICommandQueueManager commandQueueManager, Vector3 position)
+    {
+        if (_commandIsPending)
+        {
+            ProcessOnCancel();
+        };
+
+        _mover
+            .ProcessCommandExecutor(commandExecutor, command => executeCommandWrapper(commandExecutor, commandQueueManager, command), position);
     }
 
     public void executeCommandWrapper(ICommandExecutor commandExecutor, ICommandQueueManager commandQueueManager, object command)

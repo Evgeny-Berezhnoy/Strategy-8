@@ -113,6 +113,8 @@ GameObject:
   - component: {fileID: 3811241612014706185}
   - component: {fileID: 1972758263906459038}
   - component: {fileID: 4502977918941907588}
+  - component: {fileID: -4090045789182313484}
+  - component: {fileID: 183917112496243474}
   m_Layer: 0
   m_Name: Mushroom
   m_TagString: Untagged
@@ -212,7 +214,6 @@ MonoBehaviour:
   _unitParent: {fileID: 0}
   _maxHealth: 100
   _icon: {fileID: 21300000, guid: 5fe047a704cf702449ac14becfd1d9b4, type: 3}
-  _outlineDraw: {fileID: 1972758263906459038}
 --- !u!114 &769141820773162838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,7 +229,6 @@ MonoBehaviour:
   _unitParent: {fileID: 0}
   _maximumUnitsInQueue: 6
   _instantiationPoint: {fileID: 4111983682509759435}
-  _pivotPoint: {fileID: 41257345755102016}
 --- !u!114 &3811241612014706185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,6 +241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b642547f71b78914e8739f3f3774cb53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pivotPoint: {fileID: 41257345755102016}
 --- !u!114 &1972758263906459038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17776,6 +17777,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _factionID: 0
+--- !u!114 &-4090045789182313484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972758263906556723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8735395fe7db2534789532e95e8beebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &183917112496243474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972758263906556723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac6c86d2bd89e641aeee1c5c41742d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _productionTime: 5
+  _icon: {fileID: 21300000, guid: aa7377b88c3cbea46916125bbdcaffbf, type: 3}
+  _unitName: Zergling
+  _unitPrefab: {fileID: 4344988465605796714, guid: b1deef163db89b643803b750e5bf79e5,
+    type: 3}
 --- !u!1 &1972758263906556725
 GameObject:
   m_ObjectHideFlags: 0
